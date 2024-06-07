@@ -3,26 +3,26 @@
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
 import {onMounted} from "vue";
 import {listen} from "@tauri-apps/api/event";
-import {invoke} from "@tauri-apps/api/tauri";
+import {invoke} from "@tauri-apps/api";
 
 onMounted(() => {
   invoke("reload")
   show()
 })
-await listen<string>("videoSelect", (event) => {
+listen<string>("videoSelect", (event) => {
   show(event.payload)
 })
-await listen<string>("reload", () => {
+listen<string>("reload", () => {
   navigator.mediaDevices.enumerateDevices().then(devices => {
     invoke("update_video_menu", {
-      videoList: JSON.stringify(devices.filter(device => device.kind === "videoinput").map(device => (
-        {label: device.label, deviceId: device.deviceId}
-      )))
+      videoList: devices.filter(device => device.kind === "videoinput").map(device => (
+        {label: device.label, device_id: device.deviceId}
+      ))
     })
   })
 })
 
-async function show(deviceId: string = "") {
+function show(deviceId: string = "") {
   const video = document.querySelector('video')!;
   navigator.mediaDevices.getUserMedia({
     audio: false,

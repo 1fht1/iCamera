@@ -24,13 +24,13 @@ fn reload(app: AppHandle) {
     app.emit_all("reload", "").unwrap();
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 struct VideoDevice {
     label: String,
     device_id: String,
 }
 
-#[tauri::command(rename_all = "snake_case")]
+#[tauri::command]
 fn update_video_menu(app: AppHandle, video_list: Vec<VideoDevice>) {
     let mut video_devices_menu = SystemTrayMenu::new();
     for VideoDevice { label, device_id } in video_list {
@@ -59,8 +59,7 @@ fn menu_item_click_handler(app: &AppHandle, id: String) {
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![reload])
-        .invoke_handler(tauri::generate_handler![update_video_menu])
+        .invoke_handler(tauri::generate_handler![reload, update_video_menu])
         .system_tray(SystemTray::new()
             .with_menu(tray_menu(
                 SystemTrayMenu::new()
