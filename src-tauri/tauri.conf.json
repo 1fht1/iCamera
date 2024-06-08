@@ -11,7 +11,7 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false,
+      "all": true,
       "shell": {
         "all": false,
         "open": true
@@ -24,10 +24,13 @@
     "windows": [
       {
         "title": "camera_pnpm",
-        "width": 800,
-        "height": 600,
+        "transparent": true,
+        "width": 960,
+        "height": 540,
         "alwaysOnTop": true,
-        "hiddenTitle": true
+        "decorations": false,
+        "hiddenTitle": true,
+        "resizable": false
       }
     ],
     "security": {
