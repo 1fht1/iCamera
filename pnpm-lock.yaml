@@ -8,6 +8,9 @@ dependencies:
   '@tauri-apps/api':
     specifier: ^1
     version: 1.5.6
+  tauri-plugin-store-api:
+    specifier: github:tauri-apps/tauri-plugin-store#v1
+    version: github.com/tauri-apps/tauri-plugin-store/51717bbde4101f44d3e2191907419f6f7085e2ef
   vue:
     specifier: ^3.3.4
     version: 3.4.27(typescript@5.4.5)
@@ -856,3 +859,11 @@ packages:
       '@vue/server-renderer': 3.4.27(vue@3.4.27)
       '@vue/shared': 3.4.27
       typescript: 5.4.5
+
+  github.com/tauri-apps/tauri-plugin-store/51717bbde4101f44d3e2191907419f6f7085e2ef:
+    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-store/tar.gz/51717bbde4101f44d3e2191907419f6f7085e2ef}
+    name: tauri-plugin-store-api
+    version: 0.0.0
+    dependencies:
+      '@tauri-apps/api': 1.5.6
+    dev: false

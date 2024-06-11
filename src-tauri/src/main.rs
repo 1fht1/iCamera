@@ -1,8 +1,19 @@
 // Prevents an additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use std::path::PathBuf;
+
 use serde::Deserialize;
-use tauri::{AppHandle, CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu, SystemTrayMenuItem, SystemTraySubmenu};
+use tauri::{AppHandle, CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu, SystemTrayMenuItem, SystemTraySubmenu, Wry};
+use tauri_plugin_store::{JsonValue, StoreCollection, with_store};
+
+fn get_form_store(app: &AppHandle, key: String) -> Result<JsonValue, tauri_plugin_store::Error> {
+    let stores = app.state::<StoreCollection<Wry>>();
+    let path = PathBuf::from("~/camera/store.json");
+    with_store(app.app_handle(), stores, path, |store| {
+        Ok(store.get(&key).unwrap().clone())
+    })
+}
 
 fn tray_menu(video_devices_menu: SystemTrayMenu) -> SystemTrayMenu {
     SystemTrayMenu::new()
@@ -71,6 +82,7 @@ fn menu_item_click_handler(app: &AppHandle, id: String) {
 
 fn main() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_store::Builder::default().build())
         .on_window_event(|event| match event.event() {
             tauri::WindowEvent::CloseRequested { api, .. } => {
                 event.window().hide().unwrap();

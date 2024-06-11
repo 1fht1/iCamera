@@ -5,29 +5,8 @@ import {onMounted, ref} from "vue";
 import {listen} from "@tauri-apps/api/event";
 import {invoke} from "@tauri-apps/api";
 import {getCurrent, LogicalSize} from "@tauri-apps/api/window";
+import {windowSizeConfigSets} from "./windowSizeConfigSets";
 
-const windowSizeConfigSets = {
-  "large": {
-    "label": "大",
-    "width": 640,
-    "height": 360
-  },
-  "medium": {
-    "label": "中",
-    "width": 480,
-    "height": 270
-  },
-  "small": {
-    "label": "小",
-    "width": 320,
-    "height": 180
-  },
-  "tiny": {
-    "label": "迷你",
-    "width": 160,
-    "height": 90
-  }
-}
 
 onMounted(() => {
   invoke("reload")
@@ -46,9 +25,6 @@ listen<string>("reload", () => {
   })
 })
 
-let shape = ref("rectangle")
-let windowSize = ref<keyof typeof windowSizeConfigSets>("large")
-
 listen<string>("shape", () => {
   if (shape.value === "rectangle") {
     shape.value = "circle"
@@ -58,7 +34,6 @@ listen<string>("shape", () => {
     getCurrent().setSize(new LogicalSize(windowSizeConfigSets[windowSize.value].width, windowSizeConfigSets[windowSize.value].height))
   }
 })
-
 listen<string>("windowSize", (event) => {
   windowSize.value = event.payload as keyof typeof windowSizeConfigSets
   if (shape.value === "rectangle") {
@@ -67,6 +42,10 @@ listen<string>("windowSize", (event) => {
     getCurrent().setSize(new LogicalSize(windowSizeConfigSets[windowSize.value].height, windowSizeConfigSets[windowSize.value].height))
   }
 })
+
+let shape = ref("rectangle")
+let windowSize = ref<keyof typeof windowSizeConfigSets>("large")
+
 
 function show(deviceId: string = "") {
   const video = document.querySelector('video')!;
