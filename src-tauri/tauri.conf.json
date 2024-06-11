@@ -25,8 +25,8 @@
       {
         "title": "camera_pnpm",
         "transparent": true,
-        "width": 960,
-        "height": 540,
+        "width": 640,
+        "height": 360,
         "alwaysOnTop": true,
         "decorations": false,
         "hiddenTitle": true,
